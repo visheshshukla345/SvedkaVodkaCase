@@ -1,0 +1,330 @@
+---
+title: "Regression Analysis - MGT 251"
+author: "Nandini Ramakrishnan"
+output: html_document
+date: "2024-04-26"
+toc: yes
+---
+
+```{r}
+library(readxl)
+data <- read_xlsx("Svedka C UV7058-XLS-ENG.xlsx", sheet = "data")
+str(data)
+```
+
+**1.	Run a regression of the natural logarithm of sales on all the following: price, print marketing expenditure, outdoor marketing expenditure, broadcast marketing expenditure, and previous year’s sales**
+
+```{r}
+model1 <- lm(LnSales ~ LnPrice + LnPrint + LnOut + LnBroad + LagTotalSales, data = data)
+summary(model1)
+```
+**R2(Coefficient of Determination): The model explains approximately 74.25% of the variability in the natural logarithm of sales.
+
+F-statistic: The F-statistic value is 148.2, indicating that the overall regression model is statistically significant at a high level, with a p-value < 2.2e-16.
+
+LnPrice: Higher prices lead to lower sales.
+
+LnPrint: Increased print marketing expenditure correlates with higher sales.
+
+LnOut: Outdoor marketing expenditure doesn't significantly impact sales.
+
+LnBroad: Higher broadcast marketing expenditure is associated with increased sales.
+
+LagTotalSales: Past sales positively influence current sales.
+
+Overall, the model indicates that pricing, print and broadcast marketing expenditures, and past sales are significant factors influencing current sales**
+
+
+**2.	Run a regression of the natural logarithm of change in sales on the natural logarithm of previous period’s prices, and the natural log of marketing expenditures on print, outdoor, and broadcasting**
+
+```{r}
+model2 <- lm(LnDiff ~ LnLPrice + LnPrint + LnOut + LnBroad, data = data)
+summary(model2)
+```
+**The regression model explains approximately 10.05% of the variability in the natural logarithm of change in sales, with a statistically significant F-statistic value of 6.843 (p < 0.0001).
+
+Print marketing expenditure has a significant positive effect on sales change (coeff: 0.0175, p < 0.0001).
+
+Outdoor marketing expenditure shows a potentially negative effect, but it's not statistically significant (coeff: -0.0112, p = 0.0586).
+
+There's no significant relationship between broadcasting marketing expenditure and sales change (coeff: -0.0038, p = 0.4661).
+
+Previous period's prices do not significantly affect sales change (coeff: -0.0016, p = 0.9274)**
+
+**3.	To understand the influence of vodka quality, run a regression by adding the tier 1 and tier 2 dummy variables (that indicate whether a vodka brand belongs to first- or second-quality tiers) to the set of independent variables in question 2**
+```{r}
+model3 <- lm(LnDiff ~ LnLPrice + LnPrint + LnOut + LnBroad + Tier1 + Tier2, data = data)
+summary(model3)
+```
+**The regression model explains approximately 13.29% of the variability in the natural logarithm of change in sales, with a statistically significant F-statistic value of 6.207 (p < 0.0001).
+
+Print marketing expenditure has a marginally significant positive effect on sales change (coeff: 0.0093, p = 0.0677).
+
+Outdoor marketing expenditure shows a significant negative effect on sales change (coeff: -0.0128, p = 0.0363).
+
+Broadcasting marketing expenditure does not have a significant effect on sales change (coeff: -0.0049, p = 0.3568).
+
+Previous period's prices do not significantly affect sales change (coeff: -0.0377, p = 0.0914).
+
+Brands belonging to Tier 1 have a significant positive effect on sales change (coeff: 0.1450, p = 0.0123).
+
+Brands belonging to Tier 2 also have a significant positive effect on sales change (coeff: 0.1305, p = 0.0030).**
+
+**4.	To understand the influence of competition and brand power, run a regression by adding the sum of sales of all the competing brands in the previous year (“lag total minus sales”) to the independent variables in question 3.**
+```{r}
+model4 <- lm(LnDiff ~ LnLPrice + LnPrint + LnOut + LnBroad + Tier1 + Tier2 + LagTotalMinusSales, data = data)
+summary(model4)
+```
+**The regression model explains approximately 15.32% of the variability in the natural logarithm of change in sales, with a statistically significant F-statistic value of 7.445 (p < 0.0001)
+
+LnLPrice: Previous period's prices have a statistically significant negative effect on the natural logarithm of sales change (p = 0.0112).
+
+LnPrint: Print marketing expenditure has a statistically significant positive effect on the natural logarithm of sales change (p = 0.0219).
+
+LnOut: Outdoor marketing expenditure does not have a statistically significant effect on the natural logarithm of sales change (p = 0.3369).
+
+LnBroad: Broadcast marketing expenditure does not have a statistically significant effect on the natural logarithm of sales change (p = 0.5349).
+
+Tier1: Being a Tier 1 brand has a statistically significant positive effect on the natural logarithm of sales change (p = 0.0226).
+
+Tier2: Being a Tier 2 brand also has a statistically significant positive effect on the natural logarithm of sales change (p = 0.00485).
+
+LagTotalMinusSales: The sum of sales of all competing brands in the previous year has a statistically significant positive effect on the natural logarithm of sales change (p = 0.000373).
+
+Overall, previous period's prices, print marketing expenditure, and brand tiers (both Tier 1 and Tier 2) significantly influence the change in sales. However, outdoor marketing expenditure and broadcast marketing expenditure do not significantly affect sales change in this model.**
+
+**5.	To measure the sales growth of new brands compared to the existent ones, include the variable“first intro” to the independent variable set in question 4. First intro is equal to one in the first three years after a brand is introduced and is zero elsewhere.**
+
+```{r}
+model5 <- lm(LnDiff ~ LnLPrice + LnPrint + LnOut + LnBroad + Tier1 + Tier2 + LagTotalMinusSales + Firstintro, data = data)
+summary(model5)
+
+```
+**The adjusted R-squared is 0.2916, and the F-statistic is 13.81 (p < 2.2e-16), indicating a statistically significant model with 29.16% of the variability in sales change explained by the included variables
+
+LnLPrice: Previous period's prices have a statistically significant negative effect on the natural logarithm of sales change (p < 0.0001).
+
+LnPrint: Print marketing expenditure has a statistically significant positive effect on the natural logarithm of sales change (p = 0.00513).
+
+LnOut: Outdoor marketing expenditure does not have a statistically significant effect on the natural logarithm of sales change (p = 0.1688).
+
+LnBroad: Broadcast marketing expenditure does not have a statistically significant effect on the natural logarithm of sales change (p = 0.1512).
+
+Tier1: Being a Tier 1 brand has a statistically significant positive effect on the natural logarithm of sales change (p = 0.01415).
+
+Tier2: Being a Tier 2 brand also has a statistically significant positive effect on the natural logarithm of sales change (p = 0.0011).
+
+LagTotalMinusSales: The sum of sales of all competing brands in the previous year has a statistically significant positive effect on the natural logarithm of sales change (p = 0.000161).
+
+Firstintro: Being a new brand in the first three years after introduction has a statistically significant positive effect on the natural logarithm of sales change (p < 0.0001).
+
+Overall, previous period's prices, print marketing expenditure, brand tiers (both Tier 1 and Tier 2), the sum of sales of all competing brands in the previous year, and being a new brand in the first three years after introduction significantly influence the change in sales
+**
+
+**6.	Why does the coefficient of price and advertising change in the above regression?**
+
+**The coefficient of price and advertising can change in regression models due to several reasons, including changes in the set of independent variables included in the model and the interrelationships between these variables.**
+
+**Model 1:
+
+Coefficient for LnPrice: -0.9051
+
+Coefficient for LnPrint: 0.0852
+
+In this model, price has a significant negative effect on sales (LnSales), indicating that higher prices lead to lower sales. Similarly, advertising (print marketing expenditure) has a positive effect on sales, indicating that increased print advertising expenditure correlates with higher sales.
+
+Model 2:
+
+Coefficient for LnPrice: -0.0016
+
+Coefficient for LnPrint: 0.0175
+
+In this model, the inclusion of additional independent variables leads to changes in the coefficients. LnPrice now has a very small and statistically insignificant effect on sales change, suggesting that previous period's prices do not significantly affect sales change. However, the coefficient for LnPrint remains positive and significant, indicating that print advertising expenditure still positively influences sales change.
+
+Model 3:
+
+Coefficient for LnPrice: -0.0377
+
+Coefficient for LnPrint: 0.0093
+
+The addition of tier dummy variables (Tier1 and Tier2) in this model further alters the coefficients. LnPrice now has a stronger negative effect on sales change, indicating that previous period's prices have a significant negative impact on sales change. The coefficient for LnPrint decreases slightly but remains positive, suggesting that print advertising expenditure still positively influences sales change.
+
+Model 4:
+
+Coefficient for LnPrice: -0.0572
+
+Coefficient for LnPrint: 0.0115
+
+Including the sum of sales of competing brands in the previous year (LagTotalMinusSales) leads to further changes in the coefficients. LnPrice now has a more pronounced negative effect on sales change, indicating that previous period's prices have a stronger negative impact on sales change. However, the coefficient for LnPrint remains positive, albeit with a slight decrease, indicating that print advertising expenditure still positively influences sales change.
+
+Model 5:
+
+Coefficient for LnPrice: -0.0865
+
+Coefficient for LnPrint: 0.0129
+
+Adding the variable "first intro" (indicating whether a brand is introduced within the first three years) results in significant changes in the coefficients. LnPrice now has a substantially stronger negative effect on sales change, indicating that previous period's prices have a significant negative impact on sales change. The coefficient for LnPrint remains positive, albeit with a slight increase, indicating that print advertising expenditure still positively influences sales change.
+
+Overall, the changes in the coefficients of price and advertising across the regression models are influenced by the inclusion of additional independent variables, such as tier dummy variables and the sum of sales of competing brands, as well as the complex relationships between these variables and their effects on sales change.**
+
+-----------------------------------------------------------------------------------
+
+Additional analysis on the models. 
+
+```{r}
+# Extract actual values
+actual_values <- data$LnSales
+
+# Extract predicted values from the model
+predicted_values <- predict(model1, newdata = data, type = "response")
+
+# Calculate residuals
+residuals <- actual_values - predicted_values
+
+# Calculate Mean Error (ME)
+ME <- mean(residuals)
+
+# Calculate Mean Absolute Error (MAE)
+MAE <- mean(abs(residuals))
+
+# Calculate Mean Squared Error (MSE)
+MSE <- mean(residuals^2)
+
+# Calculate Mean Absolute Percentage Error (MAPE)
+MAPE <- mean(abs(residuals / actual_values)) * 100
+
+# Print the results
+print("Model 1")
+print(paste("Mean Error (ME):", ME))
+print(paste("Mean Absolute Error (MAE):", MAE))
+print(paste("Mean Squared Error (MSE):", MSE))
+print(paste("Mean Absolute Percentage Error (MAPE):", MAPE))
+
+```
+
+```{r}
+# Extract actual values
+actual_values <- data$LnDiff
+
+#selected_data <- data[, c("LnLPrice", "LnPrint", "LnOut", "LnBroad")]
+
+# Extract predicted values from the model
+predicted_values <- predict(model2)
+
+# Calculate residuals
+residuals <- actual_values - predicted_values
+
+# Calculate Mean Error (ME)
+ME <- mean(residuals)
+
+# Calculate Mean Absolute Error (MAE)
+MAE <- mean(abs(residuals))
+
+# Calculate Mean Squared Error (MSE)
+MSE <- mean(residuals^2)
+
+# Calculate Mean Absolute Percentage Error (MAPE)
+MAPE <- mean(abs(residuals / actual_values)) * 100
+
+# Print the results
+print("Model 2")
+print(paste("Mean Error (ME):", ME))
+print(paste("Mean Absolute Error (MAE):", MAE))
+print(paste("Mean Squared Error (MSE):", MSE))
+print(paste("Mean Absolute Percentage Error (MAPE):", MAPE))
+predicted_values
+
+```
+
+```{r}
+# Extract actual values
+actual_values <- data$LnDiff
+
+# Extract predicted values from the model
+predicted_values <- predict(model3)
+
+# Calculate residuals
+residuals <- actual_values - predicted_values
+
+# Calculate Mean Error (ME)
+ME <- mean(residuals)
+
+# Calculate Mean Absolute Error (MAE)
+MAE <- mean(abs(residuals))
+
+# Calculate Mean Squared Error (MSE)
+MSE <- mean(residuals^2)
+
+# Calculate Mean Absolute Percentage Error (MAPE)
+MAPE <- mean(abs(residuals / actual_values)) * 100
+
+# Print the results
+print("Model 3")
+print(paste("Mean Error (ME):", ME))
+print(paste("Mean Absolute Error (MAE):", MAE))
+print(paste("Mean Squared Error (MSE):", MSE))
+print(paste("Mean Absolute Percentage Error (MAPE):", MAPE))
+
+```
+
+```{r}
+# Extract actual values
+actual_values <- data$LnDiff
+
+# Extract predicted values from the model
+predicted_values <- predict(model4)
+
+# Calculate residuals
+residuals <- actual_values - predicted_values
+
+# Calculate Mean Error (ME)
+ME <- mean(residuals)
+
+# Calculate Mean Absolute Error (MAE)
+MAE <- mean(abs(residuals))
+
+# Calculate Mean Squared Error (MSE)
+MSE <- mean(residuals^2)
+
+# Calculate Mean Absolute Percentage Error (MAPE)
+MAPE <- mean(abs(residuals / actual_values)) * 100
+
+# Print the results
+print("Model 4")
+print(paste("Mean Error (ME):", ME))
+print(paste("Mean Absolute Error (MAE):", MAE))
+print(paste("Mean Squared Error (MSE):", MSE))
+print(paste("Mean Absolute Percentage Error (MAPE):", MAPE))
+
+```
+
+```{r}
+# Extract actual values
+actual_values <- data$LnDiff
+
+# Extract predicted values from the model
+predicted_values <- predict(model5)
+
+# Calculate residuals
+residuals <- actual_values - predicted_values
+
+# Calculate Mean Error (ME)
+ME <- mean(residuals)
+
+# Calculate Mean Absolute Error (MAE)
+MAE <- mean(abs(residuals))
+
+# Calculate Mean Squared Error (MSE)
+MSE <- mean(residuals^2)
+
+# Calculate Mean Absolute Percentage Error (MAPE)
+MAPE <- mean(abs(residuals / actual_values)) * 100
+
+# Print the results
+print("Model 5")
+print(paste("Mean Error (ME):", ME))
+print(paste("Mean Absolute Error (MAE):", MAE))
+print(paste("Mean Squared Error (MSE):", MSE))
+print(paste("Mean Absolute Percentage Error (MAPE):", MAPE))
+
+```
