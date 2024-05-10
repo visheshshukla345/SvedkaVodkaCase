@@ -25,7 +25,8 @@ Cuvelier identified a market opportunity for a premium yet affordably priced vod
 # Repository Structure
 
 1. **Detailed analysis.pdf**: Contains all the answers to the case questions.
-2. **RegressionAnalysis File.Rmd**: Contains the code for the Data Analysis and liner regression implementation
-3. **Svedka Dataset**: Contains the dataset for liner regression
-4. **Svedka Vodka PPT Presentation.pdf**: Contains the PPT Presentation file for the case study analysis.
+2. **RegressionAnalysis File.Rmd**: Contains the code for the Data Analysis and liner regression implementation.
+3. **RegressionAnalysis File.pdf**: Contains the code for the Data Analysis and liner regression implementation in pdf.
+4. **Svedka Dataset**: Contains the dataset for liner regression.
+5. **Svedka Vodka PPT Presentation.pdf**: Contains the PPT Presentation file for the case study analysis.
   
