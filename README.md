@@ -1,4 +1,4 @@
-# SvedkaVodkaCase — What Moves Vodka Sales?
+# SvedkaVodkaCase: What Moves Vodka Sales?
 
 A brand-strategy and econometrics case on SVEDKA vodka: how positioning, pricing, and the marketing mix drive sales in a crowded category. Strategy questions are answered qualitatively; the sales drivers are quantified with regression.
 
@@ -35,11 +35,11 @@ SVEDKA entered the market as an affordable premium vodka. This case asks two thi
 
 ## Repo guide
 
-- `RegressionAnalysis File.Rmd` / `Regression Analysis file.html` — the five regression models and outputs.
-- `Detailed analysis.pdf` — written answers to the strategy questions.
-- `Svedka Dataset.xlsx` — the case dataset (`data` sheet).
-- `Svedka Vodka PPT Presentation.pdf` — slides.
-- `assets/hero.png` — coefficient chart of the marketing-mix model (regenerated from the dataset).
+- `RegressionAnalysis File.Rmd` / `Regression Analysis file.html`: the five regression models and outputs.
+- `Detailed analysis.pdf`: written answers to the strategy questions.
+- `Svedka Dataset.xlsx`: the case dataset (`data` sheet).
+- `Svedka Vodka PPT Presentation.pdf`: slides.
+- `assets/hero.png`: coefficient chart of the marketing-mix model (regenerated from the dataset).
 
 **Reproduce:** open the `.Rmd` in RStudio and knit; it reads the `data` sheet and fits the models.
 
